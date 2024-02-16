@@ -1,0 +1,25 @@
+networks:
+  test-network:
+    driver: bridge
+    attachable: true
+
+services:
+  server:
+    image: openquantumsafe/nginx
+    hostname: server.com
+    ports:
+      - "4433:4433"
+    networks:
+      - test-network
+    volumes:
+      - ./Server/certs/:/opt/nginx/pki
+  
+  openssl_client:
+    image: openquantumsafe/curl
+    networks:
+      - test-network
+    volumes:
+      - ./Client/ca/:/opt/tmp
+
+    
+
