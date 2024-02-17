@@ -28,3 +28,13 @@
     * I used kyber768
     * We can see that we get the nginx start page and the authentication and KEM works
     * using curl -v we can see more info
+
+5. We will check now boringssl client:
+    - docker-compose run -it boringssl_client
+    - bssl client -curves kyber768 -connect server.com:4433
+    * We will see the handshake failed, this is because boringssl does not support hybrid signatures, so we will check with server that it's certificate is signed only with quantum alogrithm
+    * We will create new pki signed only with dilithium and move the new CA.crt to the boringssl_client folder
+    - bssl client -curves kyber768 -connect server_quantum.com:4443
+    * Now the connection has been made successfully
+
+6. docker-compose down to stop and remove all the containers

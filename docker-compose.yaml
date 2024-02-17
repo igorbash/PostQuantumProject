@@ -12,14 +12,30 @@ services:
     networks:
       - test-network
     volumes:
-      - ./Server/certs/:/opt/nginx/pki
+      - ./server/certs/:/opt/nginx/pki
+
+  server_quantumonly:
+    image: openquantumsafe/nginx
+    hostname: server_quantum.com
+    ports:
+      - "4443:4443"
+    networks:
+      - test-network
+    volumes:
+      - ./server_quantumonly/certs/:/opt/nginx/pki
+      - ./server_quantumonly/config/:/opt/nginx/nginx-conf
   
   openssl_client:
     image: openquantumsafe/curl
     networks:
       - test-network
     volumes:
-      - ./Client/ca/:/opt/tmp
-
-    
-
+      - ./openssl_client/ca/:/opt/tmp
+  
+  boringssl_client:
+    image: oqs_boringssl
+    build: ./boringssl_client
+    networks:
+      - test-network
+    volumes:
+      - ./boringssl_client/ca/:/opt/tmp
