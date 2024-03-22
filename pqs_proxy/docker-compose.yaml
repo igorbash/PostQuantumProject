@@ -5,8 +5,10 @@ networks:
 
 services:
   proxy:
-    image: openquantumsafe/nginx
-    hostname: pqsProxy.com
+    image: pqs_proxy
+    build: ./proxy
+    hostname: pqProxy.com
+    user: root
     ports:
       - "8080:8080"
     networks:

@@ -88,4 +88,4 @@ We would use https proxy - pqsProxy.com, that would send our requests to the int
     - We try to get google.com using hybrid method - it won't work 
     docker-compose run -it --rm client curl https://google.com --curves p521_kyber1024
     - Now we using the proxy, which supports quantum safe algorithms. The client will do the TLS with the proxy in quantum safe way, and the proxy will do the TLS with the server, in classic way, and return the result to the client. 
-    docker-compose run -it --rm client curl --cacert /opt/tmp/proxy_CA.crt -x https://pqsProxy.com:8080 https://google.com --curves p521_kyber1024
+    docker-compose run -it --rm client curl --cacert /opt/tmp/proxy_CA.crt https://pqProxy.com:8080/https://google.com --curves p521_kyber1024
