@@ -14,11 +14,16 @@ services:
     volumes:
       - ./proxy/certs/:/opt/nginx/pki
       - ./proxy/config/:/opt/nginx/nginx-conf
+    environment:
+      - SSL_CERT_FILE=/etc/ssl/cert.pem
   
-  openssl_client:
+  client:
     image: openquantumsafe/curl
     networks:
       - proxy-network
     volumes:
-      - ./openssl_client/ca/:/opt/tmp
+      - ./client/ca/:/opt/tmp
+    environment:
+      - SSL_CERT_FILE=/etc/ssl/cert.pem
+
   
