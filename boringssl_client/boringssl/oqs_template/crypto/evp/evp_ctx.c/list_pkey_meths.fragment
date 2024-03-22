@@ -1,4 +1,0 @@
-{%- for sig in config['sigs'] %}
-    &{{ sig['name'] }}_pkey_meth,
-{%- endfor %}
-
