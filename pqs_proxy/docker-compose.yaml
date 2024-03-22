@@ -1,0 +1,24 @@
+networks:
+  proxy-network:
+    driver: bridge
+    attachable: true
+
+services:
+  proxy:
+    image: openquantumsafe/nginx
+    hostname: pqsProxy.com
+    ports:
+      - "8080:8080"
+    networks:
+      - proxy-network
+    volumes:
+      - ./proxy/certs/:/opt/nginx/pki
+      - ./proxy/config/:/opt/nginx/nginx-conf
+  
+  openssl_client:
+    image: openquantumsafe/curl
+    networks:
+      - proxy-network
+    volumes:
+      - ./openssl_client/ca/:/opt/tmp
+  
