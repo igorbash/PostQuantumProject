@@ -4,26 +4,38 @@ networks:
     attachable: true
 
 services:
-  server:
+  classic_server:
     image: openquantumsafe/nginx
-    hostname: server.com
+    hostname: classic.com
     ports:
       - "4433:4433"
     networks:
       - test-network
     volumes:
-      - ./server/certs/:/opt/nginx/pki
+      - ./classic_server/certs/:/opt/nginx/pki
+      - ./classic_server/config/:/opt/nginx/nginx-conf
 
-  server_quantumonly:
+  pq_server:
     image: openquantumsafe/nginx
-    hostname: server_quantum.com
+    hostname: pq.com
     ports:
-      - "4443:4443"
+      - "4434:4434"
     networks:
       - test-network
     volumes:
-      - ./server_quantumonly/certs/:/opt/nginx/pki
-      - ./server_quantumonly/config/:/opt/nginx/nginx-conf
+      - ./pq_server/certs/:/opt/nginx/pki
+      - ./pq_server/config/:/opt/nginx/nginx-conf
+
+  hybrid_server:
+    image: openquantumsafe/nginx
+    hostname: hybrid.com
+    ports:
+      - "4435:4435"
+    networks:
+      - test-network
+    volumes:
+      - ./hybrid_server/certs/:/opt/nginx/pki
+      - ./hybrid_server/config/:/opt/nginx/nginx-conf
   
   openssl_client:
     image: openquantumsafe/curl
