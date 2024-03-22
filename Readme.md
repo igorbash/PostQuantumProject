@@ -66,5 +66,7 @@ We will demonstrate 3 servers: classic, pq only, hybrid and 2 clients: openssl a
     
     * We can use any KEM (classic, hybrid, pq only) from the list: https://github.com/open-quantum-safe/oqs-provider#algorithms
 
+    * For now, classical algorithms are safe. But when they won't, attacker could decrypt old data they saved. So the best option is to use at least Hybrid KEMS for our data to be secure in the future to (if someone collects it). The use of hybrid signatures can be delayed.
+
 5. Stop the docker compose:
     - docker-compose down
