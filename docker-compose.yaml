@@ -45,7 +45,7 @@ services:
       - ./openssl_client/ca/:/opt/tmp
   
   boringssl_client:
-    image: oqs_boringssl
+    image: boringssl
     build: ./boringssl_client
     networks:
       - test-network

@@ -1,4 +1,7 @@
-1. We will create certifactes for all types of servers - in each certs folder of each server:
+We will demonstrate 3 servers: classic, pq only, hybrid and 2 clients: openssl and boringssl
+
+
+1. Certificates creation for all types of servers - in each certs folder of each server:
     1.1. classic_server:
 
     
@@ -23,7 +26,7 @@
     - Create self signed CA with p521_dilithium5, named hybrid CA
     docker run -v .:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey p521_dilithium5 -keyout /tmp/hybrid_CA.key -out /tmp/hybrid_CA.crt -nodes -subj "/CN=hybrid CA" -days 365
     - Create certificate request with p384_dilithium3 key for domain hybrid.com
-    docker run -v .:/tmp -it openquantumsafe/curl openssl req -new -newkey p384_dilithium3 -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=hyrbid.com"
+    docker run -v .:/tmp -it openquantumsafe/curl openssl req -new -newkey p384_dilithium3 -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=hybrid.com"
     - Create the server certificate and sign with the CA
     docker run -v .:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/hybrid_CA.crt -CAkey /tmp/hybrid_CA.key -CAcreateserial -days 365
 
@@ -33,7 +36,6 @@
     2.1. cp ./*/certs/*_CA.crt .\openssl_client\ca\
     2.2. cp ./*/certs/*_CA.crt .\boringssl_client\ca\
 
-
 3. The docker compose consists of:
     Run the docker compose:
     - docker-compose up -d
@@ -41,21 +43,28 @@
     * 3 types of servers according to their signature algorithms: classic, pq, hybrid. The servers run nginx.
     * 2 clients that support pq algorithms - openssl client and boring ssl client
 
-4. Now curl to the server:
-    - docker-compose run -it openssl_client
-    - curl --cacert /opt/tmp/CA.crt --curves KEM https://server.com:4433
-    * KEM can be one of the following: 
-    https://github.com/open-quantum-safe/oqs-provider#algorithms
-    * I used kyber768
-    * We can see that we get the nginx start page and the authentication and KEM works
-    * using curl -v we can see more info
+4. Client Tests:
+    4.1. openssl client
+        * oqs fork of openssl supports classic, pq only and hybrid signatures and KEM. Those commands will send https get request to each server:
+        - GET request to classic server with ecdh (x25519) key exchange - works.
+        docker-compose run -it --rm openssl_client  curl --cacert /opt/tmp/classic_CA.crt --curves x25519 https://classic.com:4433
+        - GET request to pq server with kyber768 key exchange - works. 
+        docker-compose run -it --rm openssl_client  curl --cacert /opt/tmp/pq_CA.crt --curves kyber768 https://pq.com:4434
+        - GET request to hybrid server with hybrid sp521_kyber1024 key exchange - works. 
+        docker-compose run -it --rm openssl_client  curl --cacert /opt/tmp/hybrid_CA.crt  --curves p521_kyber1024  https://hybrid.com:4435
 
-5. We will check now boringssl client:
-    - docker-compose run -it boringssl_client
-    - bssl client -curves kyber768 -connect server.com:4433
-    * We will see the handshake failed, this is because boringssl does not support hybrid signatures, so we will check with server that it's certificate is signed only with quantum alogrithm
-    * We will create new pki signed only with dilithium and move the new CA.crt to the boringssl_client folder
-    - bssl client -curves kyber768 -connect server_quantum.com:4443
-    * Now the connection has been made successfully
+    4.2. boringssl client
+        * oqs fork of boringssl supports classic, pq only and hybrid KEM  but only classic and pq only Signatures. Those commands will send https get request to each server:
+        - GET request to classic server with ecdh (x25519) key exchange - works.
+        docker-compose run -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: classic.com\r\nConnection: close\r\n\r\n' | bssl client -connect classic.com:4433 -curves x25519"
+        - GET request to pq server with kyber768 key exchange - works. 
+        docker-compose run -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: pq.com\r\nConnection: close\r\n\r\n' | bssl client -connect pq.com:4434 -curves kyber768"
+        - GET request to pq server with hybrid p521_kyber1024 key exchange - works. 
+        docker-compose run -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: pq.com\r\nConnection: close\r\n\r\n' | bssl client -connect pq.com:4434 -curves p521_kyber1024"
+        - GET request to hybrid server with x25519 key exchange - NOT WORKING (because boringssl does not support hybrid singatures)
+        docker-compose run -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: hybrid.com\r\nConnection: close\r\n\r\n' | bssl client -connect hybrid.com:4435 -curves x25519"
+    
+    * We can use any KEM (classic, hybrid, pq only) from the list: https://github.com/open-quantum-safe/oqs-provider#algorithms
 
-6. docker-compose down to stop and remove all the containers
+5. Stop the docker compose:
+    - docker-compose down
