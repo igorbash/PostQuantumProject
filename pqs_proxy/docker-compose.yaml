@@ -1,0 +1,31 @@
+networks:
+  proxy-network:
+    driver: bridge
+    attachable: true
+
+services:
+  proxy:
+    image: pqs_proxy
+    build: ./proxy
+    hostname: pqProxy.com
+    user: root
+    ports:
+      - "8080:8080"
+    networks:
+      - proxy-network
+    volumes:
+      - ./proxy/certs/:/opt/nginx/pki
+      - ./proxy/config/:/opt/nginx/nginx-conf
+    environment:
+      - SSL_CERT_FILE=/etc/ssl/cert.pem
+  
+  client:
+    image: openquantumsafe/curl
+    networks:
+      - proxy-network
+    volumes:
+      - ./client/ca/:/opt/tmp
+    environment:
+      - SSL_CERT_FILE=/etc/ssl/cert.pem
+
+  

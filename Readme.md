@@ -1,5 +1,6 @@
 We will demonstrate 3 servers: classic, pq only, hybrid and 2 clients: openssl and boringssl
 
+* OQS = open quantum safe - opensource project to support quantum safe algorithms in openssl and more.
 
 1. Certificates creation for all types of servers - in each certs folder of each server:
     1.1. classic_server:
@@ -70,3 +71,21 @@ We will demonstrate 3 servers: classic, pq only, hybrid and 2 clients: openssl a
 
 5. Stop the docker compose:
     - docker-compose down
+
+
+===================================================================
+
+We will demonstrate the use of post quantum safe gateway, which would allow us to be protected against quantum eavedroppers on our traffic.
+Our client would be openssl client that support postquanutm KEM and signatrues.
+Our server would be the known google.com that is not have support for post quantum algorithms.
+We would use https proxy - pqsProxy.com, that would send our requests to the internet, but the connection between the client and the proxy would be quantum Safe.
+
+1. In folder pqs_proxy, we have client and proxy. Client will be oqs openssl. Proxy would be oqs nginx to support the hybrid tls and would do the requests for the client with the classic and not quantum safe servers (google.com for example)
+2. We created hybrid certificates for the proxy and self signed using CA we created.
+3. The docker compose would start the client and proxy
+4. run and test:
+    - docker-compose up -d
+    - We try to get google.com using hybrid method - it won't work 
+    docker-compose run -it --rm client curl https://google.com --curves p521_kyber1024
+    - Now we using the proxy, which supports quantum safe algorithms. The client will do the TLS with the proxy in quantum safe way, and the proxy will do the TLS with the server, in classic way, and return the result to the client. 
+    docker-compose run -it --rm client curl --cacert /opt/tmp/proxy_CA.crt https://pqProxy.com:8080/https://google.com --curves p521_kyber1024
