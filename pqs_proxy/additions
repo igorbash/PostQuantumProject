@@ -1,0 +1,2 @@
+/ # cat /opt/tmp/proxy_CA.crt >> /etc/ssl/cert.pem
+/ # cat /opt/tmp/proxy_CA.crt >> /opt/oqssa/oqs-bundle.pem
