@@ -5,17 +5,16 @@ networks:
 
 services:
   proxy:
-    image: pqs_proxy
-    build: ./proxy
+    image: openquantumsafe/httpd
     hostname: pqProxy.com
     user: root
     ports:
-      - "8080:8080"
+      - "4433:4433"
     networks:
       - proxy-network
     volumes:
-      - ./proxy/certs/:/opt/nginx/pki
-      - ./proxy/config/:/opt/nginx/nginx-conf
+      - ./proxy/certs/:/opt/httpd/pki
+      - ./proxy/config/:/opt/httpd/httpd-conf
     environment:
       - SSL_CERT_FILE=/etc/ssl/cert.pem
   
