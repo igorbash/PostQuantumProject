@@ -15,8 +15,7 @@ services:
     volumes:
       - ./proxy/certs/:/opt/httpd/pki
       - ./proxy/config/:/opt/httpd/httpd-conf
-    environment:
-      - SSL_CERT_FILE=/etc/ssl/cert.pem
+
   
   client:
     image: openquantumsafe/curl
@@ -24,7 +23,4 @@ services:
       - proxy-network
     volumes:
       - ./client/ca/:/opt/tmp
-    environment:
-      - SSL_CERT_FILE=/etc/ssl/cert.pem
-
-  
+      - ./client/ca/oqs-bundle.pem:/opt/oqssa/oqs-bundle.pem
