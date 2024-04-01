@@ -16,7 +16,6 @@ services:
       - ./proxy/certs/:/opt/httpd/pki
       - ./proxy/config/:/opt/httpd/httpd-conf
 
-  
   client:
     image: openquantumsafe/curl
     networks:
@@ -24,3 +23,10 @@ services:
     volumes:
       - ./client/ca/:/opt/tmp
       - ./client/ca/oqs-bundle.pem:/opt/oqssa/oqs-bundle.pem
+
+  wireshark:
+    image: openquantumsafe/wireshark
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - ./wireshark/:/tmp
