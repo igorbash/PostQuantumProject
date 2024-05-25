@@ -1,0 +1,11 @@
+services:
+  proxy:
+    image: openquantumsafe/httpd
+    hostname: pqs_proxy.com
+    user: root
+    ports:
+      - "4433:4433"
+    network_mode: "host"
+    volumes:
+      - ./proxy/certs/:/opt/httpd/pki
+      - ./proxy/config/:/opt/httpd/httpd-conf

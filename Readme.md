@@ -94,3 +94,8 @@ We would use https proxy - pqsProxy.com, that would send our requests to the int
     - Now in wireshark folder there would be traffic.txt file - in it we can see:
     * First handshake between client and proxy succeeds by using post quantum methods.
     * Second handshake betwwen proxy and server succeeds by using classic methods.
+
+=====================================================================================
+
+We will create our proxy to use with chrome. Chrome supports only hybrid KEM so we will use classic certificate.
+ --ignore-certificate-errors --proxy-server=https://pqs_proxy.com:4433
