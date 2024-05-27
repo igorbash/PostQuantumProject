@@ -1,3 +1,8 @@
+networks:
+  proxy-network:
+    driver: bridge
+    attachable: true
+
 services:
   proxy:
     image: openquantumsafe/httpd
@@ -5,7 +10,8 @@ services:
     user: root
     ports:
       - "4433:4433"
-    network_mode: "host"
+    networks:
+      - proxy-network
     volumes:
       - ./proxy/certs/:/opt/httpd/pki
       - ./proxy/config/:/opt/httpd/httpd-conf
