@@ -3,29 +3,29 @@
 echo "Creating classic server certificates"
 echo "===================================="
 echo "Creating self signed CA with RSA, named classic CA"
-sudo docker run -v tests/classic_server/certs/:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey RSA -keyout /tmp/classic_CA.key -out /tmp/classic_CA.crt -nodes -subj "/CN=classic CA" -days 365
+sudo docker run -v ./tests/classic_server/certs/:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey RSA -keyout /tmp/classic_CA.key -out /tmp/classic_CA.crt -nodes -subj "/CN=classic CA" -days 365
 echo "Creating certificate request with RSA key for domain classic.com"
-sudo docker run -v tests/classic_server/certs/:/tmp -it openquantumsafe/curl openssl req -new -newkey RSA -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=classic.com"
+sudo docker run -v ./tests/classic_server/certs/:/tmp -it openquantumsafe/curl openssl req -new -newkey RSA -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=classic.com"
 echo "Creating the server certificate and sign with the CA"
-sudo docker run -v tests/classic_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/classic_CA.crt -CAkey /tmp/classic_CA.key -CAcreateserial -days 365
+sudo docker run -v ./tests/classic_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/classic_CA.crt -CAkey /tmp/classic_CA.key -CAcreateserial -days 365
 echo "===================================="
 echo "Creating pq server certificates"
 echo "===================================="
 echo "Creating self signed CA with dilithium5, named pq CA" 
-sudo docker run -v tests/pq_server/certs/:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey dilithium5 -keyout /tmp/pq_CA.key -out /tmp/pq_CA.crt -nodes -subj "/CN=pq CA" -days 365
+sudo docker run -v ./tests/pq_server/certs/:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey dilithium5 -keyout /tmp/pq_CA.key -out /tmp/pq_CA.crt -nodes -subj "/CN=pq CA" -days 365
 echo "Creating certificate request with dilithium3 key for domain pq.com"
-sudo docker run -v tests/pq_server/certs/:/tmp -it openquantumsafe/curl openssl req -new -newkey dilithium3 -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=pq.com"
+sudo docker run -v ./tests/pq_server/certs/:/tmp -it openquantumsafe/curl openssl req -new -newkey dilithium3 -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=pq.com"
 echo "Creating the server certificate and sign with the CA" 
-sudo docker run -v tests/pq_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/pq_CA.crt -CAkey /tmp/pq_CA.key -CAcreateserial -days 365
+sudo docker run -v ./tests/pq_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/pq_CA.crt -CAkey /tmp/pq_CA.key -CAcreateserial -days 365
 echo "===================================="
 echo "Creating hybrid server certificates"
 echo "===================================="
 echo "Creating self signed CA with p521_dilithium5, named hybrid CA"
-sudo docker run -v tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey p521_dilithium5 -keyout /tmp/hybrid_CA.key -out /tmp/hybrid_CA.crt -nodes -subj "/CN=hybrid CA" -days 365
+sudo docker run -v ./tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl req -x509 -new -newkey p521_dilithium5 -keyout /tmp/hybrid_CA.key -out /tmp/hybrid_CA.crt -nodes -subj "/CN=hybrid CA" -days 365
 echo "Creating certificate request with p384_dilithium3 key for domain hybrid.com"
-sudo docker run -v tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl req -new -newkey p384_dilithium3 -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=hybrid.com"
+sudo docker run -v ./tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl req -new -newkey p384_dilithium3 -keyout /tmp/server.key -out /tmp/server.csr -nodes -subj "/CN=hybrid.com"
 echo "Creating the server certificate and sign with the CA"
-sudo docker run -v tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/hybrid_CA.crt -CAkey /tmp/hybrid_CA.key -CAcreateserial -days 365
+sudo docker run -v ./tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/hybrid_CA.crt -CAkey /tmp/hybrid_CA.key -CAcreateserial -days 365
 echo "===================================="
 echo "Copying ca files to BoringSSl client and openSSL client"
 cp ./tests/*/certs/*_CA.crt .\openssl_client\ca\
