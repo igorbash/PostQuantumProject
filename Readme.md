@@ -12,26 +12,26 @@ The project consists of 3 parts:
     3. Post Quantum Https forward proxy for chrome
 
 ================== PQS servers and clients tests ====================
-    - to run all the tests simply run - ./run_tests.sh
-    Description:
-    a. First there is a certificates creation using the following commands:
-        - self signed CA creation
-        openssl req -x509 -new -newkey [SIG_ALG] -keyout CA.key -out CA.crt -nodes -subj "/CN=CA" -days 365
-        - Create certificate request with [SIG_ALG]:
-        openssl req -new -newkey [SIG_ALG] -keyout server.key -out server.csr -nodes -subj "/CN=server.com"
-        - Create the server certificate and sign with the CA
-        openssl x509 -req -in server.csr -out server.crt -CA CA.crt -CAkey CA.key -CAcreateserial -days 365
+- to run all the tests simply run - ./run_tests.sh
+Description:
+a. First there is a certificates creation using the following commands:
+    - self signed CA creation
+    openssl req -x509 -new -newkey [SIG_ALG] -keyout CA.key -out CA.crt -nodes -subj "/CN=CA" -days 365
+    - Create certificate request with [SIG_ALG]:
+    openssl req -new -newkey [SIG_ALG] -keyout server.key -out server.csr -nodes -subj "/CN=server.com"
+    - Create the server certificate and sign with the CA
+    openssl x509 -req -in server.csr -out server.crt -CA CA.crt -CAkey CA.key -CAcreateserial -days 365
 
-        * [SIG_ALG] can be classic, hybrid or post quantum only - The list is in the following link: https://github.com/open-quantum-safe/openssl#authentication      
-    b. Running http get requests using 2 different clients: openSSL and boringSSL.
-        * openSSL supports - classic, hybrid and postquantum signatures and KEM.
-        * boringSSL supports - classic signatures only and classic hybrid and postquantum only KEM.
-        a. To use openSSL: curl --cacert CA.crt --curves [KEM] https://server.com:4433
-        b. To use boringSSL: bssl client -connect example.com:4433 -curves [KEM]
-        * [KEM] can be classic, hybrid or post quantum only - the list: https://github.com/open-quantum-safe/oqs-provider#algorithms.
+    * [SIG_ALG] can be classic, hybrid or post quantum only - The list is in the following link: https://github.com/open-quantum-safe/openssl#authentication      
+b. Running http get requests using 2 different clients: openSSL and boringSSL.
+    * openSSL supports - classic, hybrid and postquantum signatures and KEM.
+    * boringSSL supports - classic signatures only and classic hybrid and postquantum only KEM.
+    a. To use openSSL: curl --cacert CA.crt --curves [KEM] https://server.com:4433
+    b. To use boringSSL: bssl client -connect example.com:4433 -curves [KEM]
+    * [KEM] can be classic, hybrid or post quantum only - the list: https://github.com/open-quantum-safe/oqs-provider#algorithms.
 
-    * For now, classical algorithms are safe. But when they won't, attacker could decrypt old data they saved. So the best option is to use at least Hybrid KEMS for our data to be secure in the future to (if someone collects it). The use of hybrid signatures can be delayed.
-
+* For now, classical algorithms are safe. But when they won't, attacker could decrypt old data they saved. So the best option is to use at least Hybrid KEMS for our data to be secure in the future to (if someone collects it). The use of hybrid signatures can be delayed.
+* Full commands using dockers are in the script
 ===================================================================
 
 We will demonstrate the use of post quantum safe gateway, which would allow us to be protected against quantum eavedroppers on our traffic.
