@@ -33,7 +33,7 @@ cp ./tests/*/certs/*_CA.crt ./tests/boringssl_client/ca/
 echo "===================================="
 echo "Running docker compose"
 cd tests
-sudo docker compose -d
+sudo docker compose up -d
 echo "===================================="
 echo "Testing openSSL client"
 echo "GET request to classic server with ecdh (x25519) key exchange - works."
