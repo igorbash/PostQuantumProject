@@ -28,8 +28,8 @@ echo "Creating the server certificate and sign with the CA"
 sudo docker run -v ./tests/hybrid_server/certs/:/tmp -it openquantumsafe/curl openssl x509 -req -in /tmp/server.csr -out /tmp/server.crt -CA /tmp/hybrid_CA.crt -CAkey /tmp/hybrid_CA.key -CAcreateserial -days 365
 echo "===================================="
 echo "Copying ca files to BoringSSl client and openSSL client"
-cp ./tests/*/certs/*_CA.crt .\openssl_client\ca\
-cp ./tests/*/certs/*_CA.crt .\boringssl_client\ca\
+cp ./tests/*/certs/*_CA.crt ./tests/openssl_client/ca/
+cp ./tests/*/certs/*_CA.crt ./tests/boringssl_client/ca/
 echo "===================================="
 echo "Running docker compose"
 cd tests
