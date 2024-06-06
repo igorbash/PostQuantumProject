@@ -41,7 +41,6 @@ Our client would be openssl client that support postquanutm KEM and signatrues.
 Our server would be the domain example.com that is not have support for post quantum algorithms.
 We would use https proxy - pqsProxy.com, that would send our requests to the internet, but the connection between the client and the proxy would be quantum Safe.
 
-
 1. In folder pqs_proxy, we have client and proxy. Client will be oqs openssl. Proxy would be oqs apache to support the hybrid tls and would do the requests for the client with the classic and not quantum safe servers (example.com for example)
 2. We created hybrid certificates for the proxy and self signed using CA we created.
 3. The docker compose would start the client and proxy and also wireshark to see the traffic
@@ -61,7 +60,12 @@ We would use https proxy - pqsProxy.com, that would send our requests to the int
 ==========================Chrome PQ Proxy===================================
 
 We will create our proxy to use with chrome. Chrome supports only hybrid KEM so we will use classic certificate.
-* To create local certificates us the script chrome_pq_proxy/create_certs.sh - put the created scripts in chrome_pq_proxy/proxy/certs
+* To create local certificates use the script chrome_pq_proxy/create_certs.sh - put the created scripts in chrome_pq_proxy/proxy/certs
 * Start the docker compose and run chrome using the script run_chrome.sh:
     Will start chrome using our proxy
 * This can be used in cloud and use real certificates.
+
+-- In the cloud:
+1. Create real certificates and put them in chrome_pq_proxy/proxy/certs
+2. run docker-compose up -d from the chrome_pq_proxy folder
+3. set up the proxy domain in your computer with port 4433
