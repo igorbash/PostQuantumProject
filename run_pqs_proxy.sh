@@ -9,5 +9,5 @@ sudo docker compose run -it --rm client curl https://wtfismyip.com/json --curves
 echo "Trying get site wtfismyip.com with hybrid KEM using the proxy - will succeed: use wireshark to capture the traffic"
 echo "Press Enter to continue..."
 read  
-sudo docker-compose run -it --rm client curl -x https://pqProxy.com:4433 https://wtfismyip.com/json
+sudo docker compose run -it --rm client curl -x https://pqProxy.com:4433 https://wtfismyip.com/json
 sudo docker compose down
