@@ -57,7 +57,9 @@ sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl cl
 sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
 sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
 echo "===================================="
-echo "Showing Results"
 echo "Shutting Down"
+echo "Showing Results"
+python3 -m pip install matplotlib
+python3 show_results.py
 sudo docker compose down
 cd ..
