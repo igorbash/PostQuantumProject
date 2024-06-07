@@ -12,10 +12,10 @@ columns = ["Client", "KEM", "Classic Server", "Post Quantum Server", "Hybrid Ser
 data = [
     ["OpenSSL", "ECDH x25519", "", "", ""],
     ["OpenSSL","Kyber768", "", "", ""],
-    ["OpenSSL", "Hybrid p256_kyber768", "", "", ""],
+    ["OpenSSL", "Hybrid p521_kyber1024", "", "", ""],
     ["BoringSSL", "ECDH x25519", "", "", ""],
     ["BoringSSL", "Kyber768", "", "", ""],
-    ["BoringSSL", "Hybrid p256_kyber768", "", "", ""],
+    ["BoringSSL", "Hybrid p521_kyber1024", "", "", ""],
 ]
 fig, ax = plt.subplots(figsize=(8, 8))  # Adjust the size as needed
 ax.axis('off')

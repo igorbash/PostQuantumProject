@@ -36,15 +36,15 @@ cd tests
 sudo docker compose up -d
 echo "===================================="
 echo "Testing openSSL client"
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/classic_CA.crt --curves x25519 https://classic.com:4433 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/classic_CA.crt --curves kyber768 https://classic.com:4433 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/classic_CA.crt --curves p521_kyber1024 https://classic.com:4433 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/pq_CA.crt --curves x25519 https://pq.com:4434 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/pq_CA.crt --curves kyber768 https://pq.com:4434 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/pq_CA.crt --curves p521_kyber1024 https://pq.com:4434 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/hybrid_CA.crt  --curves x25519  https://hybrid.com:4435 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/hybrid_CA.crt  --curves kyber768  https://hybrid.com:4435 >> output.txt
-sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}" --cacert /opt/tmp/hybrid_CA.crt  --curves p521_kyber1024  https://hybrid.com:4435 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves x25519 https://classic.com:4433 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves kyber768 https://classic.com:4433 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves p521_kyber1024 https://classic.com:4433 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves x25519 https://pq.com:4434 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves kyber768 https://pq.com:4434 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves p521_kyber1024 https://pq.com:4434 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves x25519  https://hybrid.com:4435 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves kyber768  https://hybrid.com:4435 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves p521_kyber1024  https://hybrid.com:4435 >> output.txt
 echo "===================================="
 echo "Testing boringSSL client"
 sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
