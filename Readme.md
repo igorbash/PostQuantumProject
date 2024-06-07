@@ -4,6 +4,7 @@ Requirements:
     - linux system (Everything can run on windows or mac because of the dockers)
 
 The project consists of 3 parts:
+
     1. Demonstration of 3 different servers - classic, pq only, hybrid, and 2 different clients - openSSL and boringSSL - all are forks of OQS and can support post quantum cryptography. The difference is in their certificates.
     * OQS = open quantum safe - opensource project to support quantum safe algorithms in openssl and more.
 
