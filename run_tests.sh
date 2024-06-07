@@ -36,23 +36,28 @@ cd tests
 sudo docker compose up -d
 echo "===================================="
 echo "Testing openSSL client"
-echo "GET request to classic server with ecdh (x25519) key exchange - works."
 sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/classic_CA.crt --curves x25519 https://classic.com:4433
-echo "GET request to pq server with kyber768 key exchange - works."
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/classic_CA.crt --curves kyber768 https://classic.com:4433
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/classic_CA.crt --curves x25519_kyber768 https://classic.com:4433
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/pq_CA.crt --curves x25519 https://pq.com:4434
 sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/pq_CA.crt --curves kyber768 https://pq.com:4434
-echo "GET request to hybrid server with hybrid sp521_kyber1024 key exchange - works."
-sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/hybrid_CA.crt  --curves p521_kyber1024  https://hybrid.com:4435
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/pq_CA.crt --curves x25519_kyber768 https://pq.com:4434
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/hybrid_CA.crt  --curves x25519  https://hybrid.com:4435
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/hybrid_CA.crt  --curves kyber768  https://hybrid.com:4435
+sudo docker compose run -u root -it --rm openssl_client  curl --cacert /opt/tmp/hybrid_CA.crt  --curves x25519_kyber768  https://hybrid.com:4435
 echo "===================================="
 echo "Testing boringSSL client"
-echo "GET request to classic server with ecdh (x25519) key exchange - works."
 sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: classic.com\r\nConnection: close\r\n\r\n' | bssl client -connect classic.com:4433 -curves x25519"
-echo "GET request to pq server with kyber768 key exchange - works."
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: classic.com\r\nConnection: close\r\n\r\n' | bssl client -connect classic.com:4433 -curves kyber768"
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: classic.com\r\nConnection: close\r\n\r\n' | bssl client -connect classic.com:4433 -curves x25519_kyber768"
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: pq.com\r\nConnection: close\r\n\r\n' | bssl client -connect pq.com:4434 -curves x25519"
 sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: pq.com\r\nConnection: close\r\n\r\n' | bssl client -connect pq.com:4434 -curves kyber768"
-echo "GET request to pq server with hybrid p521_kyber1024 key exchange - works." 
-sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: pq.com\r\nConnection: close\r\n\r\n' | bssl client -connect pq.com:4434 -curves p521_kyber1024"
-echo "GET request to hybrid server with x25519 key exchange - NOT WORKING (because boringssl does not support hybrid singatures)"
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: pq.com\r\nConnection: close\r\n\r\n' | bssl client -connect pq.com:4434 -curves x25519_kyber768"
 sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: hybrid.com\r\nConnection: close\r\n\r\n' | bssl client -connect hybrid.com:4435 -curves x25519"
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: hybrid.com\r\nConnection: close\r\n\r\n' | bssl client -connect hybrid.com:4435 -curves kyber768"
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo 'GET / HTTP/1.1\r\nHost: hybrid.com\r\nConnection: close\r\n\r\n' | bssl client -connect hybrid.com:4435 -curves x25519_kyber768"
 echo "===================================="
+echo "Showing Results"
 echo "Shutting Down"
 sudo docker compose down
 cd ..
