@@ -36,26 +36,26 @@ cd tests
 sudo docker compose up -d
 echo "===================================="
 echo "Testing openSSL client"
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves x25519 https://classic.com:4433 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves kyber768 https://classic.com:4433 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves p521_kyber1024 https://classic.com:4433 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves x25519 https://pq.com:4434 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves kyber768 https://pq.com:4434 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves p521_kyber1024 https://pq.com:4434 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves x25519  https://hybrid.com:4435 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves kyber768  https://hybrid.com:4435 >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves p521_kyber1024  https://hybrid.com:4435 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves x25519 https://classic.com:4433 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves kyber768 https://classic.com:4433 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/classic_CA.crt --curves p521_kyber1024 https://classic.com:4433 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves x25519 https://pq.com:4434 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves kyber768 https://pq.com:4434 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/pq_CA.crt --curves p521_kyber1024 https://pq.com:4434 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves x25519  https://hybrid.com:4435 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves kyber768  https://hybrid.com:4435 >> output.txt
+sudo docker compose run -u root -it --rm openssl_client  curl -s -o /dev/null -w "%{http_code}\n" --cacert /opt/tmp/hybrid_CA.crt  --curves p521_kyber1024  https://hybrid.com:4435 >> output.txt
 echo "===================================="
 echo "Testing boringSSL client"
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect pq.com:4434 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect pq.com:4434 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect pq.com:4434 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
-/usr/bin/time -o times.txt -a sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect classic.com:4433 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect pq.com:4434 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect pq.com:4434 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect pq.com:4434 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves x25519 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves kyber768 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
+sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl client -connect hybrid.com:4435 -curves p521_kyber1024 2>/tmp/output ; cat /tmp/output | grep -oE 'Connected|Error'" >> output.txt
 echo "===================================="
 echo "Shutting Down"
 echo "Showing Results"
