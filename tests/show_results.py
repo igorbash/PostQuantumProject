@@ -38,11 +38,20 @@ for row_index, row in enumerate(data):
         else:
             table.add_cell(row_index + 1, col_index, width=0.25, height=0.2, text=cell, loc='center')
 for (i, j), cell in table.get_celld().items():
-    if i > 0 and j > 0:
-        if cell.get_text().get_text() == 'Success':
-            cell.set_facecolor('green')
-        elif cell.get_text().get_text() == 'Failure':
-            cell.set_facecolor('red')
+    if cell.get_text().get_text() == 'Success':
+        cell.set_facecolor('green')
+    elif cell.get_text().get_text() == 'Failure':
+        cell.set_facecolor('red')
+    elif cell.get_text().get_text() == 'OpenSSL':
+        cell.set_facecolor('tan')
+    elif cell.get_text().get_text() == 'BoringSSL':
+        cell.set_facecolor('ivory')
+    elif cell.get_text().get_text() == 'ECDH x25519':
+        cell.set_facecolor('cornflowerblue')
+    elif cell.get_text().get_text() == 'Kyber768':
+        cell.set_facecolor('lavender')
+    elif cell.get_text().get_text() == 'Hybrid p521_kyber1024':
+        cell.set_facecolor('paleturquoise')
 ax.add_table(table)
 plt.title("OpenSSL client and BoringSSL client connect to 3 servers with different certificate signature and different KEM algorithms")
 plt.tight_layout()
