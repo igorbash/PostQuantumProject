@@ -67,6 +67,32 @@ We will create our proxy to use with chrome. Chrome supports only hybrid KEM so 
 * This can be used in cloud and use real certificates.
 
 -- In the cloud:
-1. Create real certificates and put them in chrome_pq_proxy/proxy/certs
-2. run docker-compose up -d from the chrome_pq_proxy folder
-3. set up the proxy domain in your computer with port 4433
+1. Create EC2 linux instance (ubuntu server for example. Free tier was enough for me)
+2. Attach domain to it (using aws Route 53 or some other provider)
+3. SSH to the instance and do the following:
+    - copy the folder chrome_pq_proxy to the instance
+    - sudo apt update 
+    3.1 install docker-compose;
+        * install docker:
+        - sudo apt install apt-transport-https ca-certificates curl software-properties-common
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        - sudo apt install docker-ce
+        - sudo systemctl status docker (check docker is active)
+        * install docker-compose:
+        - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        - sudo chmod +x /usr/local/bin/docker-compose
+        - docker-compose --version (verify installed correctly)
+    3.2 install certbot (let's encrypt bot to create certificates)
+        - sudo snap install --classic certbot
+        - sudo ln -s /snap/bin/certbot /usr/bin/certbot
+    3.3 Generate Certificates for your domain:
+        - sudo certbot certonly --standalone
+        - follow the instruction to generate certificates for your domain
+        - copy the certificate and and the key:
+            cp /etc/letsencrypt/live/<domain>/fullchain.pem /chrome_pqs_proxy/proxy/certs/server.crt 
+            cp /etc/letsencrypt/live/<domain>/privkey.pem chrome_pqs_proxy/proxy/certs/server.key
+    3.4 Run the proxy server:
+        - from inside the folder chrome_pqs_proxy run:
+            sudo docker-compose up -d
+4. Now you can use your server as proxy in your own computer
