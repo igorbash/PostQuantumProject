@@ -59,7 +59,7 @@ sudo docker compose run -u root -it --rm boringssl_client sh -c "echo  | bssl cl
 echo "===================================="
 echo "Shutting Down"
 echo "Showing Results"
-python3 -m pip install matplotlib
+pip3 install matplotlib
 python3 show_results.py
 sudo docker compose down
 cd ..
