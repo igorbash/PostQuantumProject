@@ -29,7 +29,7 @@ sudo certbot certonly --standalone -d $1 --non-interactive --agree-tos -m webmas
 sudo cp /etc/letsencrypt/live/$1/fullchain.pem pq_proxy/proxy/certs/server.crt 
 sudo cp /etc/letsencrypt/live/$1/privkey.pem pq_proxy/proxy/certs/server.key
 
-echo "Running server"
+echo "Running server on port 4433"
 cd pq_proxy
 sudo docker compose up -d
 echo "To stop the server enter the following command: cd pq_proxy; sudo docker compose down"
